@@ -1,0 +1,10 @@
+dust - 150x150
+pepe - 250x250
+
+Jump animation
+1 frame - getting ready for jump
+2 frame - jump (pepe going up)
+3 frame - falling
+4 - landing
+
+dust should appear on landing frame

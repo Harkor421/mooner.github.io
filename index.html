@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mooner</title>
+  <link rel="icon" href="./img/pepe.ico" type="image/x-icon">
+  <style>
+    body {
+      background: black;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+
+    .game-over-container {
+    position: absolute;
+    top: 64%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+  }
+
+  .game-over-container.hidden {
+    display: none;
+  }
+
+  #playerNameInput {
+    width: 100%;
+    padding: 5px;
+    margin: 10px 0;
+  }
+
+#submitScoreButton {
+  background-color: #3498db;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+    .game-container {
+      background-color: #333;
+      padding: 30px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    .health-bar {
+      width: 100px;
+      height: 10px;
+      background-color: #ff0000;
+      position: absolute;
+      top: 9px;
+      left: 50px;
+    }
+
+    .altitude-counter {
+      color: white;
+      font-size: 16px;
+      position: absolute;
+      top: 2px;
+      right: 10px;
+    }
+
+
+    .dogecounter {
+      color: white;
+      font-size: 10px;
+      position: absolute;
+      top: 12px;
+      left: 410px;
+    }
+
+    canvas {
+      display: block;
+    }
+
+    .heart-icon {
+      position: absolute;
+      top: 0;
+      left: 10px;
+      height: 30px;
+      width: 30px;
+    }
+
+    .dogecoin {
+      position: absolute;
+      top: 2.5px;
+      left: 370px;
+      height: 30px;
+      width: 30px;
+    }
+
+    .flame {
+      position: absolute;
+      top: 3px;
+      left: 800px;
+      height: 30px;
+      width: 60px;
+    }
+
+    .hidden-image {
+      display: none;
+    }
+
+    .title {
+      color: white;
+      font-size: 36px;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .leaderboard-container {
+      background-color: #333;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: white;
+    }
+
+    .leaderboard-container h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .leaderboard-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+      #playAgainButton {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    }
+    .leaderboard-list li {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="title">Mooner</div>
+  <div class="game-container">
+    <canvas></canvas>
+    <img src="./img/heart.png" alt="Heart" class="heart-icon">
+    <img src="./img/dogecoin.png" alt="Doge" class="dogecoin">
+    <img src="./img/flamethrower.png" alt="Flame" class="flame">
+    <div class="health-bar"></div>
+    <div class="altitude-counter">Altitude: 0 meters</div>
+    <div class="dogecounter"></div>
+    <input type="hidden" id="maxheight" value="s">
+  </div>
+  <div class="game-over-container hidden">
+    <p></p>
+    <input type="text" id="playerNameInput" placeholder="Enter your name">
+    <button id="submitScoreButton">Submit Score</button>
+    <button id="playAgainButton">Play Again</button>
+  </div>
+  <div class="leaderboard-container">
+    <h2>Leaderboard</h2>
+    <ol class="leaderboard-list">
+    </ol>
+  </div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.2.0/firebase-app.js';
+    import { getDatabase, ref, set, push, get} from 'https://www.gstatic.com/firebasejs/10.2.0/firebase-database.js';
+  
+    const firebaseConfig = {
+    apiKey: "AIzaSyDMkOpEJiAue1yudka6WAgxqXDERHhuf2M",
+    authDomain: "mooner-907f1.firebaseapp.com",
+    databaseURL: "https://mooner-907f1-default-rtdb.firebaseio.com",
+    projectId: "mooner-907f1",
+    storageBucket: "mooner-907f1.appspot.com",
+    messagingSenderId: "426306396246",
+    appId: "1:426306396246:web:f920e905af6d1c099a9bf7",
+    measurementId: "G-VY6FGWLRKY"
+  };
+  
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+  
+    console.log("Firebase initialized");
+
+
+
+        // Handle submitting the score
+        const submitScoreButton = document.getElementById('submitScoreButton');
+        submitScoreButton.addEventListener('click', () => {
+        const playerNameInput = document.getElementById("playerNameInput");
+        const playerName = playerNameInput.value;
+        const hiddenVarInput = document.getElementById("maxheight");
+        const maxheight = hiddenVarInput.value;
+
+        console.log("Player Name:", playerName);
+
+        // Reference to a specific node in the database
+        const usersRef = ref(database, 'users');
+
+        // Generate a new key for the entry
+        const newEntryRef = push(usersRef);
+        
+        const userData = {
+        username: playerName,
+        score: maxheight,
+        };
+
+        // Write data to the database
+        set(newEntryRef, userData)
+        .then(() => {
+        console.log('Data successfully written to the database');
+        })
+        .catch((error) => {
+        console.error('Error writing data:', error);
+        });
+        location.reload();
+        });
+
+//FILL LEADERBOARD
+
+const leaderboardList = document.querySelector('.leaderboard-list');
+
+// Reference to the 'users' node in the database
+const usersRef = ref(database, 'users');
+
+// Fetch the user data from the database
+get(usersRef)
+  .then((snapshot) => {
+    if (snapshot.exists()) {
+      const userData = snapshot.val();
+
+      // Convert user data into an array of objects
+      const usersArray = Object.entries(userData).map(([userId, user]) => ({
+        id: userId,
+        username: user.username,
+        score: user.score,
+      }));
+
+      // Sort the usersArray by score in descending order
+      usersArray.sort((a, b) => b.score - a.score);
+
+      leaderboardList.innerHTML = ''; // Clear the existing entries
+
+      // Loop through the sorted user data and update the leaderboard
+      usersArray.forEach((user) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${user.username}: ${user.score} meters`;
+        leaderboardList.appendChild(listItem);
+      });
+    } else {
+      console.log('No data available');
+    }
+  })
+  .catch((error) => {
+    console.error('Error reading data:', error);
+  });
+
+
+
+        
+  </script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/classes/CollisionBlock.js"></script>
+  <script src="./js/classes/Sprite.js"></script>
+  <script src="./js/classes/Player.js"></script>
+  <script src="./js/data/collisions.js"></script>
+  <script src="./js/classes/Cohete.js"></script>
+  <script src="./js/classes/GUI.js"></script>
+  <script src="./js/classes/Enemy.js"></script>
+  <script src="./js/classes/SuperJump.js"></script>
+  <script src="./js/classes/Timer.js"></script>
+  <script src="./js/classes/Uganda.js"></script>
+  <script src="./js/classes/Flamethrower.js "></script>
+  <script src="./js/classes/Button.js "></script>
+  <script src="index.js"></script>
+</body>
+</html>
