@@ -15,7 +15,7 @@ class Player extends Sprite {
       y: 1,
     }
     this.isjumping = false
-    this.health = 30;
+    this.health = 100;
     this.projectiles = [];
     this.ignite = false;
     this.shootingDirection = 0; // Initialize shooting direction

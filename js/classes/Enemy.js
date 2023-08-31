@@ -197,7 +197,7 @@ class ProjectilePlayer{
     this.direction = direction;
     this.velocity = {
       x: Math.cos(direction) * speed,
-      y: Math.sin(direction) * speed
+      y: Math.sin(direction) * speed,
     };
   }
 

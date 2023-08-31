@@ -57,7 +57,7 @@ function updateHealthBar(health, maxHealth) {
   const healthBar = document.querySelector('.health-bar');
 
   // Set a shorter width for the health bar while maintaining proportions
-  const shorterWidth = 30; // Adjust this value to make the health bar shorter
+  const shorterWidth = 26; // Adjust this value to make the health bar shorter
   const newWidth = (shorterWidth / 100) * healthPercentage;
   healthBar.style.width = `${newWidth}%`;
 
