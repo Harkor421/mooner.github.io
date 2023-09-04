@@ -309,7 +309,7 @@ class Player extends Sprite {
         if (this.velocity.y > 0) {
           this.velocity.y = 0
           if(this.audiocaer == false){
-            if(getRandomTrueWithProbability(1) == true){
+            if(getRandomTrueWithProbability(0.0000001) == true){
               this.health = 0;
               playSound("./audio/bomb.mp3")
             }

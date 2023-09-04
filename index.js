@@ -152,7 +152,7 @@ const camera = {
 }
 
 const cohete1 = new Cohete({
-  position: { x: 9000, y: 15900 },
+  position: { x: 443, y: 11578-50 },
   width: 50,
   height: 100,
   imageSrc: "./img/cohete.png",
@@ -163,6 +163,14 @@ const cohete1 = new Cohete({
 
 const doge = new SuperJump({
   position: { x: 200, y: 15900 },
+  width: 25,
+  height: 25,
+  imageSrc: "./img/dogecoin.png",
+  // Other properties for the game object...
+});
+
+const doge1 = new SuperJump({
+  position: { x: 367, y: 12666 - 30 },
   width: 25,
   height: 25,
   imageSrc: "./img/dogecoin.png",
@@ -194,6 +202,16 @@ const uganda1 = new Uganda({
   width: 80,
   height: 80,
   imageSrc: "./img/uganda.png",
+  moveRadius: 400,
+  triggerdistance: 80,
+  health: 100,
+});
+
+const andrew = new Andrew({
+  position: { x: 256, y: 13746 },
+  width: 80,
+  height: 80,
+  imageSrc: "./img/andrew.png",
   moveRadius: 400,
   triggerdistance: 80,
   health: 100,
@@ -252,6 +270,7 @@ function animate() { //MAIN LOOP
     player.update(ctx)
     player.update2(ctx)
     player.checkProjectileCollisionsWithEnemy(uganda1)
+    player.checkProjectileCollisionsWithEnemy(andrew)
     player.checkProjectileCollisionsWithEnemy(enemy1)
     enemy1.updateHitbox()
     enemy1.draw(ctx)
@@ -266,8 +285,19 @@ function animate() { //MAIN LOOP
     uganda1.shootProjectile(player)
     uganda1.drawHealthBar(ctx)
     uganda1.checkProjectileCollisionsWithPlayer(player)
-    console.log("VIDA: " + uganda1.health)
     }
+
+
+    if(andrew.dead != true){
+      andrew.updateHitbox()
+      andrew.draw(ctx)
+      andrew.move(player)
+      andrew.shootProjectile(player)
+      andrew.drawHealthBar(ctx)
+      andrew.checkProjectileCollisionsWithPlayer(player)
+      }
+    
+
   
     cohete1.updateHitbox();
     doge.updateHitbox();
@@ -275,7 +305,10 @@ function animate() { //MAIN LOOP
     doge.draw(ctx);
     cohete1.checkCollisionWithPlayer(player);
   
-  
+    doge1.updateHitbox();
+    doge1.draw(ctx);
+
+  console.log("X: " + player.position.x + " Y: " + player.position.y)
   
       // Update projectiles
       for (let i = 0; i < player.projectiles.length; i++) {

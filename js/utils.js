@@ -22,6 +22,7 @@ function platformCollision({ object1, object2 }) {
 function playSound(audioName){
   let audio = new Audio(audioName)
   audio.play();
+  return audio;
 }
 
 function drawBoldText(text, x, y, fontSize, fontFamily, ctx) {

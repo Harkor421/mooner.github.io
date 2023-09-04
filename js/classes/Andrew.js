@@ -1,4 +1,4 @@
-class Uganda {
+class Andrew {
   constructor({ position, width, height, imageSrc, moveRadius, triggerdistance, health}) {
     this.position = position;
     this.width = width;
@@ -24,6 +24,8 @@ class Uganda {
     this.triggerdistance = triggerdistance;
     this.health = health;
     this.dead = false;
+    this.music = false;
+    this.music2 = false;
   }
 
   move(player) {
@@ -75,7 +77,6 @@ class Uganda {
     };
 
     if(this.health < 1){
-        player.health = player.health + 100;
         this.dead = true;
         this.position.x = 2000;
     }
@@ -143,10 +144,15 @@ class Uganda {
   
     shootProjectile(player) {
       if(this.inrange == true){
+
+        if(this.music == false){
+        const sound = playSound("./audio/andrewmusic.mp3")
+        this.music = true;
+        }
       if(this.health > 50){
       const currentTime = Date.now();
       if (currentTime - this.lastShotTime >= this.shootingInterval) {
-        const numProjectiles = 8; // Number of projectiles to shoot
+        const numProjectiles = 12; // Number of projectiles to shoot
         const spreadAngle = (2 * Math.PI) / numProjectiles; // Angle between projectiles
   
         for (let i = 0; i < numProjectiles; i++) {
@@ -160,11 +166,11 @@ class Uganda {
           const projectile = new Projectile({
             position: { x: this.position.x + this.width / 2, y: this.position.y + this.height / 2 },
             radius: 2.5, // Adjust radius as needed
-            color: 'red', // Change color to red
+            color: 'white', // Change color to red
             speed: 1.5, // Adjust speed as needed
             direction: direction,
           });
-          playSound("./audio/shot.mp3")
+          playSound("./audio/whoosh.mp3")
           this.projectiles.push(projectile);
         }
   
@@ -173,40 +179,37 @@ class Uganda {
       }
     }
     else{ //Segunda fase
+
+      
+      if (this.music2 == false) {
+        const sound2 = playSound("./audio/breathe.mp3");
+        this.music2 = true;
+      }
       const currentTime = Date.now();
-      this.shootingInterval = 500;
+      this.shootingInterval = 150;
       if (currentTime - this.lastShotTime >= this.shootingInterval) {
-        const numProjectiles = 24; // Number of projectiles to shoot
-        const spreadAngle = (2 * Math.PI) / numProjectiles; // Angle between projectiles
-  
-        for (let i = 0; i < numProjectiles; i++) {
-          const dx = player.position.x - this.position.x;
-          const dy = player.position.y - this.position.y;
-  
-          // Calculate the direction with spread
-          const direction = Math.atan2(dy, dx) + i * spreadAngle;
-  
-          // Create a new projectile and add it to the projectiles array
-          const projectile = new Projectile({
-            position: { x: this.position.x + this.width / 2, y: this.position.y + this.height / 2 },
-            radius: 2.5, // Adjust radius as needed
-            color: 'red', // Change color to red
-            speed: 1.8, // Adjust speed as needed
-            direction: direction,
-          });
-          playSound("./audio/shot.mp3")
-          this.projectiles.push(projectile);
-        }
-  
+        const numProjectiles = 1; // Only shoot 1 projectile in a ray
+
+        // Calculate the direction of the ray
+        const dx = player.position.x - this.position.x;
+        const dy = player.position.y - this.position.y;
+        const direction = Math.atan2(dy, dx);
+
+        // Create a new projectile (ray) and add it to the projectiles array
+        const projectile = new Projectile({
+          position: { x: this.position.x + this.width / 2, y: this.position.y + this.height / 2 },
+          radius: 2.5, // Adjust radius as needed
+          color: 'white', // Change color to red
+          speed: 1.8, // Adjust speed as needed
+          direction: direction,
+        });
+        playSound("./audio/shot.mp3");
+        this.projectiles.push(projectile);
+
         // Update the last shot time
         this.lastShotTime = currentTime;
-
+      }
     }
-  }
-
-
-
-
   }
   
  }
