@@ -60,7 +60,7 @@ gravity = 0.1
 const player = new Player({
   position: {
     x: 100,
-    y: 15850,
+    y: 13746 //15850,
   },
   collisionBlocks,
   platformCollisionBlocks,
@@ -147,12 +147,12 @@ const backgroundImageHeight = 16000
 const camera = {
   position: {
     x: 0,
-    y: -backgroundImageHeight + scaledCanvas.height,
+    y: (-backgroundImageHeight + scaledCanvas.height) + 2000,
   },
 }
 
 const cohete1 = new Cohete({
-  position: { x: 443, y: 11578-50 },
+  position: { x: 443, y: 11578-50  },
   width: 50,
   height: 100,
   imageSrc: "./img/cohete.png",
@@ -217,6 +217,26 @@ const andrew = new Andrew({
   health: 100,
 });
 
+const golem = new Golem({
+  position: { x: 256, y: 12580 },
+  width: 80,
+  height: 80,
+  imageSrc: "./img/golem.png",
+  moveRadius: 400,
+  triggerdistance: 80,
+  health: 200,
+});
+
+const dogeboss = new DogeBoss({
+  position: { x: 256, y: 12000 },
+  width: 80,
+  height: 80,
+  imageSrc: "./img/dogeboss.png",
+  moveRadius: 400,
+  triggerdistance: 80,
+  health: 200,
+});
+
 
 const startButtonColors = ['black', 'purple', 'navi']; // Colors for the button to cycle through
 const startButton = new Button(
@@ -272,6 +292,7 @@ function animate() { //MAIN LOOP
     player.checkProjectileCollisionsWithEnemy(uganda1)
     player.checkProjectileCollisionsWithEnemy(andrew)
     player.checkProjectileCollisionsWithEnemy(enemy1)
+    player.checkProjectileCollisionsWithEnemy(golem)
     enemy1.updateHitbox()
     enemy1.draw(ctx)
     enemy1.move(player)
@@ -296,6 +317,25 @@ function animate() { //MAIN LOOP
       andrew.drawHealthBar(ctx)
       andrew.checkProjectileCollisionsWithPlayer(player)
       }
+
+      if(golem.dead != true){
+        golem.updateHitbox()
+        golem.draw(ctx)
+        golem.move(player)
+        golem.shootProjectile(player)
+        golem.drawHealthBar(ctx)
+        golem.checkProjectileCollisionsWithPlayer(player)
+        }
+
+        if(dogeboss.dead != true){
+          dogeboss.updateHitbox()
+          dogeboss.draw(ctx)
+          dogeboss.move(player)
+          dogeboss.shootProjectile(player)
+          dogeboss.drawHealthBar(ctx)
+          dogeboss.checkProjectileCollisionsWithPlayer(player)
+          }
+      
     
 
   

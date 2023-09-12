@@ -1,4 +1,4 @@
-class Andrew {
+class Golem {
   constructor({ position, width, height, imageSrc, moveRadius, triggerdistance, health}) {
     this.position = position;
     this.width = width;
@@ -7,7 +7,7 @@ class Andrew {
     this.image = new Image();
     this.image.src = imageSrc;
     this.image2 = new Image();
-    this.image2.src = "./img/andrewrage.png"
+    this.image2.src = "./img/golem2.png"
     this.hitbox = {
       position: {
         x: this.position.x,
@@ -101,7 +101,7 @@ class Andrew {
 
 
   draw(ctx) {
-    if(this.health > 50){
+    if(this.health > 150){
     ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
     else{
@@ -155,41 +155,48 @@ class Andrew {
         const sound = playSound("./audio/andrewmusic.mp3")
         this.music = true;
         }
-      if(this.health > 50){
+      if(this.health > 150){
       const currentTime = Date.now();
       if (currentTime - this.lastShotTime >= this.shootingInterval) {
-        const numProjectiles = 12; // Number of projectiles to shoot
-        const spreadAngle = (2 * Math.PI) / numProjectiles; // Angle between projectiles
-  
+        const numProjectiles = 3; // Number of shotgun pellets to shoot
+        const spreadAngle = (Math.PI / 8); // Angle between shotgun pellets
+        
         for (let i = 0; i < numProjectiles; i++) {
           const dx = player.position.x - this.position.x;
           const dy = player.position.y - this.position.y;
-  
+        
           // Calculate the direction with spread
-          const direction = Math.atan2(dy, dx) + i * spreadAngle;
-  
+          const direction = Math.atan2(dy, dx);
+        
+          // Calculate the offset angle for shotgun spread
+          const offsetAngle = (i - 1) * spreadAngle;
+        
+          // Adjust the direction by the offset angle
+          const adjustedDirection = direction + offsetAngle;
+        
           // Create a new projectile and add it to the projectiles array
           const projectile = new Projectile({
             position: { x: this.position.x + this.width / 2, y: this.position.y + this.height / 2 },
             radius: 2.5, // Adjust radius as needed
-            color: 'white', // Change color to red
-            speed: 1.5, // Adjust speed as needed
-            direction: direction,
+            color: '#996633', // Change color to red
+            speed: 2, // Adjust speed as needed
+            direction: adjustedDirection,
           });
-          playSound("./audio/whoosh.mp3")
+          playSound("./audio/rockthrowsound.mp3")
           this.projectiles.push(projectile);
         }
-  
+        
         // Update the last shot time
         this.lastShotTime = currentTime;
+        
       }
     }
     else{ //Segunda fase
 
-      this.imageSrc = "./img/andrewrage.png";
+      this.imageSrc = "./img/golem2.png";
 
       if (this.music2 == false) {
-        const sound2 = playSound("./audio/breathe.mp3");
+        const sound2 = playSound("./audio/pekka.mp3");
         this.music2 = true;
       }
       const currentTime = Date.now();
@@ -205,12 +212,12 @@ class Andrew {
         // Create a new projectile (ray) and add it to the projectiles array
         const projectile = new Projectile({
           position: { x: this.position.x + this.width / 2, y: this.position.y + this.height / 2 },
-          radius: 2.5, // Adjust radius as needed
-          color: 'white', // Change color to red
-          speed: 1.8, // Adjust speed as needed
+          radius: 8, // Adjust radius as needed
+          color: '#996633', // Change color to red
+          speed: 2.5, // Adjust speed as needed
           direction: direction,
         });
-        playSound("./audio/shot.mp3");
+        playSound("./audio/rockthrowsound.mp3");
         this.projectiles.push(projectile);
 
         // Update the last shot time

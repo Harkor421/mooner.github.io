@@ -15,7 +15,7 @@ class Player extends Sprite {
       y: 1,
     }
     this.isjumping = false
-    this.health = 100;
+    this.health = 10000;
     this.projectiles = [];
     this.ignite = false;
     this.shootingDirection = 0; // Initialize shooting direction
@@ -23,7 +23,7 @@ class Player extends Sprite {
     this.superjump = false;
     this.dead = false;
     this.collisionBlocks = collisionBlocks
-    this.flamethrower = false;
+    this.flamethrower = true;
     this.platformCollisionBlocks = platformCollisionBlocks
     this.hitbox = {
       position: {
