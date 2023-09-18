@@ -187,15 +187,6 @@ const flamethrower = new Flamethrower({
 
 
 
-const enemy1 = new Enemy({
-  position: { x: 300, y: 15800 },
-  width: 40,
-  height: 40,
-  imageSrc: "./img/drone.gif",
-  moveRadius: 300,
-  triggerdistance: 40,
-  health: 20,
-});
 
 const uganda1 = new Uganda({
   position: { x: 300, y: 14850 },
@@ -257,6 +248,7 @@ const startButton = new Button(
 
 
 
+fillWorldWithEnemies();
 
 gamestate = 0;
 
@@ -282,23 +274,19 @@ function animate() { //MAIN LOOP
     // First, update the hitbox for the game object
   
    ctx = canvas.getContext("2d");
-  
-  
-  
 
+
+    player.checkProjectileCollisionsWithEnemies(enemies)
     player.checkForHorizontalCanvasCollision()
     player.update(ctx)
     player.update2(ctx)
     player.checkProjectileCollisionsWithEnemy(uganda1)
     player.checkProjectileCollisionsWithEnemy(andrew)
-    player.checkProjectileCollisionsWithEnemy(enemy1)
     player.checkProjectileCollisionsWithEnemy(golem)
-    enemy1.updateHitbox()
-    enemy1.draw(ctx)
-    enemy1.move(player)
-    enemy1.shootProjectile(player)
-    enemy1.checkProjectileCollisionsWithPlayer(player)
-  
+
+    updateEnemies(ctx);
+
+    //UGANDA BOSS
     if(uganda1.dead != true){
     uganda1.updateHitbox()
     uganda1.draw(ctx)
@@ -308,7 +296,7 @@ function animate() { //MAIN LOOP
     uganda1.checkProjectileCollisionsWithPlayer(player)
     }
 
-
+    //ANDREW BOSS
     if(andrew.dead != true){
       andrew.updateHitbox()
       andrew.draw(ctx)
@@ -318,6 +306,7 @@ function animate() { //MAIN LOOP
       andrew.checkProjectileCollisionsWithPlayer(player)
       }
 
+      //GOLEM BOSS
       if(golem.dead != true){
         golem.updateHitbox()
         golem.draw(ctx)
@@ -326,7 +315,7 @@ function animate() { //MAIN LOOP
         golem.drawHealthBar(ctx)
         golem.checkProjectileCollisionsWithPlayer(player)
         }
-
+      //DOGE BOSS
         if(dogeboss.dead != true){
           dogeboss.updateHitbox()
           dogeboss.draw(ctx)
@@ -336,6 +325,7 @@ function animate() { //MAIN LOOP
           dogeboss.checkProjectileCollisionsWithPlayer(player)
           }
       
+          //MONKEY BOSS
     
 
   

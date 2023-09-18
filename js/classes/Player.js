@@ -69,7 +69,27 @@ class Player extends Sprite {
       this.projectiles.push(projectile);
     }
   }
-
+  checkProjectileCollisionsWithEnemies(enemies) {
+    this.projectiles = this.projectiles.filter((projectile) => {
+      // Iterate over all enemies and check for collision with the projectile
+      for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+        if (
+          projectile.position.x < enemy.hitbox.position.x + enemy.hitbox.width &&
+          projectile.position.x + projectile.radius > enemy.hitbox.position.x &&
+          projectile.position.y < enemy.hitbox.position.y + enemy.hitbox.height &&
+          projectile.position.y + projectile.radius > enemy.hitbox.position.y
+        ) {
+          // Projectile collided with the enemy, remove it from the array
+          console.log("Projectile impacted an enemy");
+          enemy.health -= 0.2; // Adjust damage as needed
+          playSound("./audio/damage.mp3");
+          return false; // Remove the projectile
+        }
+      }
+      return true; // Keep the projectile
+    });
+  }
 
   checkProjectileCollisionsWithEnemy(player) {
     this.projectiles = this.projectiles.filter((projectile) => {

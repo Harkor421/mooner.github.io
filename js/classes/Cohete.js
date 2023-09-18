@@ -4,6 +4,7 @@
       this.width = width;
       this.height = height;
       this.image = new Image();
+      this.displacement = 0;
       this.image.src = imageSrc;
       this.hitbox = {
         position: {
@@ -47,11 +48,19 @@
       };
 
       if(player.ignite == true){
+        if(this.displacement < 5000){
+        this.displacement += 2;
         this.position.y -= 2;
         player.position.y = this.position.y
-        camera.position.y += 2;
+        camera.position.y += 2.1;
         console.log(this.position.y)
         console.log("booooom")
+        }
+        else{
+          player.ignite = false;
+          player.position.y = this.position.y
+          player.isjumping = false;
+        }
       }
 
     }

@@ -1,4 +1,4 @@
-class Golem {
+class Monkey {
   constructor({ position, width, height, imageSrc, moveRadius, triggerdistance, health}) {
     this.position = position;
     this.width = width;
@@ -21,7 +21,7 @@ class Golem {
     this.interpolationFactor = 0.0012;
     this.randomSpeed = 20;
     this.projectiles = []; // Array to store projectiles
-    this.shootingInterval = 200; // Time interval for shooting in milliseconds
+    this.shootingInterval = 1500; // Time interval for shooting in milliseconds
     this.lastShotTime = 0; // Time tracking for shooting interval]
     this.triggerdistance = triggerdistance;
     this.health = health;
@@ -152,7 +152,7 @@ class Golem {
       if(this.inrange == true){
 
         if(this.music == false){
-        const sound = playSound("./audio/andrewmusic.mp3")
+        const sound = playSound("./audio/dogeost.mp3")
         this.music = true;
         }
       if(this.health > 150){
@@ -182,7 +182,7 @@ class Golem {
             speed: 2, // Adjust speed as needed
             direction: adjustedDirection,
           });
-          playSound("./audio/rockthrowsound.mp3")
+          playSound("./audio/dogesound.mp3")
           this.projectiles.push(projectile);
         }
         
