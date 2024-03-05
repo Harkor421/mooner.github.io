@@ -60,7 +60,7 @@ gravity = 0.1
 const player = new Player({
   position: {
     x: 100,
-    y: 13746 //15850,
+    y: 15850 //15850,
   },
   collisionBlocks,
   platformCollisionBlocks,
@@ -147,7 +147,7 @@ const backgroundImageHeight = 16000
 const camera = {
   position: {
     x: 0,
-    y: (-backgroundImageHeight + scaledCanvas.height) + 2000,
+    y: (-backgroundImageHeight + scaledCanvas.height),
   },
 }
 
